@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import MyWalletLogo from "../components/MyWalletLogo"
 import { useState } from "react"
+import axios from "axios"
 
 export default function SignUpPage() {
   const [register, setRegister] = useState({
@@ -22,9 +23,21 @@ export default function SignUpPage() {
     <SingUpContainer>
       <form onSubmit={event => {
         event.preventDefault();
-        // req axios
+        const { name, email, password, confirmPassword } = register;
 
-        navigate("/")
+        if (password !== confirmPassword) {
+          alert("As senhas são diferentes");
+          return
+        }
+
+        const user = { name, email, password }
+
+        axios.post("http://localhost:5000/cadastro", user).then(() => navigate("/")).catch(error => {
+          const erro = (error.response.status);
+          if (erro === 422) return alert("Os dados são inválidos tente novamente")
+          if (erro === 409) return alert("Esse email já esta em uso")
+        });
+
       }}>
         <MyWalletLogo />
         <input required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />
@@ -37,7 +50,7 @@ export default function SignUpPage() {
       <Link to={"/"}>
         Já tem uma conta? Entre agora!
       </Link>
-    </SingUpContainer>
+    </SingUpContainer >
   )
 }
 
