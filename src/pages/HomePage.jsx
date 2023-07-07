@@ -1,41 +1,66 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { UserDataContext } from "../context/UserDataContext";
+import { useContext, useEffect, useState } from "react"
 
 export default function HomePage() {
 
   const navigate = useNavigate()
+  const { userData, setUserData, token } = useContext(UserDataContext);
+  const [transactions, setTransactions] = useState([]);
+
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  }
+  useEffect(() => {
+    axios.get("http://localhost:5000/home", config).then((user) => {
+      setUserData(user.data[0].user);
+      setTransactions(user.data[1].transaction)
+    }).catch(err => console.log(err))
+  }, [])
+
+  function balance() {
+    let balanceTotal = 0;
+    transactions.map(transaction => {
+      if (transaction.type === "deposit") {
+        balanceTotal = balanceTotal + Number(transaction.valor);
+      } else {
+        balanceTotal = balanceTotal - Number(transaction.valor);
+      }
+    })
+    return balanceTotal
+  }
+
 
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
-        <BiExit onClick={() => navigate("/")} />
+        <h1>Olá, {userData.name}</h1>
+        <BiExit onClick={() => {
+          navigate("/");
+        }} />
       </Header>
-
       <TransactionsContainer>
-        <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
-        </ul>
+        <ListaUL>
+          {transactions.map(transaction =>
+            <ListItemContainer key={transaction._id}>
+              <div>
+                <span>{transaction.date}</span>
+                <strong>{transaction.description}</strong>
+              </div>
+              <Value color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.valor}</Value>
+            </ListItemContainer>
+          )}
+        </ListaUL>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={balance() >= 0 ? "positivo" : "negativo"}>{balance().toFixed(2)}</Value>
         </article>
       </TransactionsContainer>
 
@@ -54,7 +79,10 @@ export default function HomePage() {
     </HomeContainer>
   )
 }
-
+const ListaUL = styled.ul`
+    overflow-y: scroll;
+    max-height: 615px;
+`
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -78,9 +106,13 @@ const TransactionsContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
+  position:relative;
   article {
     display: flex;
-    justify-content: space-between;   
+    justify-content: space-between;  
+    /* position:relative; 
+    bottom:0px; */
     strong {
       font-weight: 700;
       text-transform: uppercase;

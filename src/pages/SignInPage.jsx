@@ -1,11 +1,13 @@
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom"
 import MyWalletLogo from "../components/MyWalletLogo"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import axios from "axios"
+import { UserDataContext } from "../context/UserDataContext";
 
 
 export default function SignInPage() {
+  const { setToken } = useContext(UserDataContext);
   const navigate = useNavigate()
   const [login, setLogin] = useState({
     email: "",
@@ -22,7 +24,10 @@ export default function SignInPage() {
     <SingInContainer>
       <form onSubmit={event => {
         event.preventDefault();
-        axios.post("http://localhost:5000/", login).then(() => navigate("/home")).catch((error) => {
+        axios.post("http://localhost:5000/", login).then((user) => {
+          setToken(user.data)
+          navigate("/home")
+        }).catch((error) => {
           const erro = (error.response.status);
           if (erro === 422) return alert("Confira os dados!");
           if (erro === 404) return alert("Email não encontrado");

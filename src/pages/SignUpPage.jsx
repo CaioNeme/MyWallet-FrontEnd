@@ -42,8 +42,8 @@ export default function SignUpPage() {
         <MyWalletLogo />
         <input required onChange={handleChange} value={register.name} name="name" placeholder="Nome" type="text" />
         <input required onChange={handleChange} value={register.email} name="email" placeholder="E-mail" type="email" />
-        <input required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" autocomplete="new-password" />
-        <input required onChange={handleChange} value={register.confirmPassword} name="confirmPassword" placeholder="Confirme a senha" type="password" autocomplete="new-password" />
+        <input required onChange={handleChange} value={register.password} name="password" placeholder="Senha" type="password" autoComplete="new-password" />
+        <input required onChange={handleChange} value={register.confirmPassword} name="confirmPassword" placeholder="Confirme a senha" type="password" autoComplete="new-password" />
         <button type="submit">Cadastrar</button>
       </form>
 
