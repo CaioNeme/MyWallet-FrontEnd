@@ -18,9 +18,12 @@ export default function HomePage() {
     }
   }
   useEffect(() => {
+    if (!token) navigate('/')
+  }, [])
+  useEffect(() => {
     axios.get("http://localhost:5000/home", config).then((user) => {
       setUserData(user.data[0].user);
-      setTransactions(user.data[1].transaction)
+      setTransactions(user.data[1].transaction.reverse())
     }).catch(err => console.log(err))
   }, [])
 
@@ -35,7 +38,6 @@ export default function HomePage() {
     })
     return balanceTotal
   }
-
 
   return (
     <HomeContainer>
@@ -53,7 +55,7 @@ export default function HomePage() {
                 <span>{transaction.date}</span>
                 <strong>{transaction.description}</strong>
               </div>
-              <Value color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.valor}</Value>
+              <Value color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.valor.replace(".", ",")}</Value>
             </ListItemContainer>
           )}
         </ListaUL>
