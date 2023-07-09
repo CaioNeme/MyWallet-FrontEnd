@@ -1,12 +1,14 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
+
 export const UserDataContext = createContext();
 
 export const UserDataProvider = ({ children }) => {
   const [userData, setUserData] = useState({});
-  const [token, setToken] = useState('')
+  const lsToken = localStorage.getItem("token");
+  const [token, setToken] = useState(lsToken);
 
   return (
-    <UserDataContext.Provider value={{ userData, setUserData, token, setToken }}>
+    <UserDataContext.Provider value={{ userData, setUserData, token, setToken, lsToken }}>
       {children}
     </UserDataContext.Provider>
   )

@@ -17,14 +17,15 @@ export default function HomePage() {
       "Authorization": `Bearer ${token}`
     }
   }
-  useEffect(() => {
-    if (!token) navigate('/')
-  }, [])
+
   useEffect(() => {
     axios.get("http://localhost:5000/home", config).then((user) => {
       setUserData(user.data[0].user);
       setTransactions(user.data[1].transaction.reverse())
     }).catch(err => console.log(err))
+  }, [])
+  useEffect(() => {
+    if (!token) navigate('/')
   }, [])
 
   function balance() {
@@ -39,11 +40,13 @@ export default function HomePage() {
     return balanceTotal
   }
 
+
   return (
     <HomeContainer>
       <Header>
         <h1>Olá, {userData.name}</h1>
         <BiExit onClick={() => {
+          localStorage.removeItem('token');
           navigate("/");
         }} />
       </Header>
