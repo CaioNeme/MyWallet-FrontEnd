@@ -24,7 +24,6 @@ export default function SignInPage() {
   function loged() {
     if (lsToken !== null) {
       navigate("/home")
-
     }
   }
   loged()
@@ -45,9 +44,9 @@ export default function SignInPage() {
         })
       }}>
         <MyWalletLogo />
-        <input required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
-        <input required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" autocomplete="new-password" />
-        <button>Entrar</button>
+        <input data-test="email" required onChange={handleChange} value={login.email} name="email" placeholder="E-mail" type="email" />
+        <input data-test="password" required onChange={handleChange} value={login.password} name="password" placeholder="Senha" type="password" autocomplete="new-password" />
+        <button data-test="sign-in-submit">Entrar</button>
       </form>
 
       <Link to={"/cadastro"}>

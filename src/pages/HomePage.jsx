@@ -44,8 +44,8 @@ export default function HomePage() {
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, {userData.name}</h1>
-        <BiExit onClick={() => {
+        <h1 data-test="user-name">Olá, {userData.name}</h1>
+        <BiExit data-test="logout" onClick={() => {
           localStorage.removeItem('token');
           navigate("/");
         }} />
@@ -56,26 +56,26 @@ export default function HomePage() {
             <ListItemContainer key={transaction._id}>
               <div>
                 <span>{transaction.date}</span>
-                <strong>{transaction.description}</strong>
+                <strong data-test="registry-name">{transaction.description}</strong>
               </div>
-              <Value color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.valor.replace(".", ",")}</Value>
+              <Value data-test="registry-amount" color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.valor.replace(".", ",")}</Value>
             </ListItemContainer>
           )}
         </ListaUL>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={balance() >= 0 ? "positivo" : "negativo"}>{balance().toFixed(2)}</Value>
+          <Value data-test="total-amount" color={balance() >= 0 ? "positivo" : "negativo"}>{balance().toFixed(2)}</Value>
         </article>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
-        <button onClick={() => navigate("/nova-transacao/entrada")}>
+        <button data-test="new-income" onClick={() => navigate("/nova-transacao/entrada")}>
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button onClick={() => navigate("/nova-transacao/saida")}>
+        <button data-test="new-expense" onClick={() => navigate("/nova-transacao/saida")}>
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>

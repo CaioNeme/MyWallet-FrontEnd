@@ -46,9 +46,9 @@ export default function TransactionsPage() {
         })
 
       }}>
-        <input required onChange={handleChange} value={transaction.valor} name="valor" placeholder="Valor" type="text" min={1} />
-        <input required onChange={handleChange} value={transaction.description} name="description" placeholder="Descrição" type="text" />
-        <button>Salvar {parms.tipo}</button>
+        <input data-test="registry-amount-input" required onChange={handleChange} value={transaction.valor} name="valor" placeholder="Valor" type="text" min={1} />
+        <input data-test="registry-name-input" required onChange={handleChange} value={transaction.description} name="description" placeholder="Descrição" type="text" />
+        <button data-test="registry-save">Salvar {parms.tipo}</button>
       </form>
     </TransactionsContainer>
   )
