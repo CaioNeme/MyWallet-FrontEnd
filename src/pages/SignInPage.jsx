@@ -7,7 +7,7 @@ import { UserDataContext } from "../context/UserDataContext";
 
 
 export default function SignInPage() {
-  const { setToken, token, lsToken } = useContext(UserDataContext);
+  const { setToken, token } = useContext(UserDataContext);
   const navigate = useNavigate();
   const [login, setLogin] = useState({
     email: "",

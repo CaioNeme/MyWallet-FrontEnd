@@ -20,7 +20,6 @@ export default function HomePage() {
 
   useEffect(() => {
     axios.get("http://localhost:5000/home", config).then((user) => {
-      setToken(null);
       setUserData(user.data[0].user);
       setTransactions(user.data[1].transaction.reverse())
     }).catch(err => console.log(err))
@@ -47,6 +46,7 @@ export default function HomePage() {
       <Header>
         <h1 data-test="user-name">Olá, {userData.name}</h1>
         <BiExit data-test="logout" onClick={() => {
+          setToken(null);
           localStorage.removeItem('token');
           navigate("/");
         }} />
