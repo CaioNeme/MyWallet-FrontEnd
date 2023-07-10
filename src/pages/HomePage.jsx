@@ -1,17 +1,17 @@
-import styled from "styled-components"
-import { BiExit } from "react-icons/bi"
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
-import { useNavigate } from "react-router-dom"
-import axios from "axios"
+import styled from "styled-components";
+import { BiExit } from "react-icons/bi";
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { UserDataContext } from "../context/UserDataContext";
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react";
+
 
 export default function HomePage() {
 
   const navigate = useNavigate()
   const { userData, setUserData, setToken, token } = useContext(UserDataContext);
   const [transactions, setTransactions] = useState([]);
-
   const config = {
     headers: {
       "Authorization": `Bearer ${token}`
@@ -19,7 +19,7 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:5000/home", config).then((user) => {
+    axios.get(`${import.meta.env.VITE_API_URL}/home`, config).then((user) => {
       setUserData(user.data[0].user);
       setTransactions(user.data[1].transaction.reverse())
     }).catch(err => console.log(err))

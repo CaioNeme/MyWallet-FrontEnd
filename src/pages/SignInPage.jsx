@@ -7,6 +7,7 @@ import { UserDataContext } from "../context/UserDataContext";
 
 
 export default function SignInPage() {
+
   const { setToken, token } = useContext(UserDataContext);
   const navigate = useNavigate();
   const [login, setLogin] = useState({
@@ -30,7 +31,7 @@ export default function SignInPage() {
     <SingInContainer>
       <form onSubmit={event => {
         event.preventDefault();
-        axios.post("http://localhost:5000/", login).then((user) => {
+        axios.post(import.meta.env.VITE_API_URL, login).then((user) => {
           setToken(user.data);
           localStorage.setItem("token", user.data);
           navigate("/home");

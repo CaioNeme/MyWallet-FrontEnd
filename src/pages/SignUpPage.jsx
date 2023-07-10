@@ -32,7 +32,7 @@ export default function SignUpPage() {
 
         const user = { name, email, password }
 
-        axios.post("http://localhost:5000/cadastro", user).then(() => navigate("/")).catch(error => {
+        axios.post(`${import.meta.env.VITE_API_URL}/cadastro`, user).then(() => navigate("/")).catch(error => {
           const erro = (error.response.status);
           if (erro === 422) return alert("Os dados são inválidos tente novamente")
           if (erro === 409) return alert("Esse email já esta em uso")

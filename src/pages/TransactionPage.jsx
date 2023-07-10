@@ -37,7 +37,7 @@ export default function TransactionsPage() {
         if (transaction.valor === "0") return alert("Zero não é um numero valido")
         if (transaction.valor.includes(",")) transaction.valor = transaction.valor.replace(",", ".")
         transaction.valor = Number(transaction.valor).toFixed(2)
-        axios.post(`http://localhost:5000/nova-transacao/${parms.type}`, transaction, config).then(() => {
+        axios.post(`${import.meta.env.VITE_API_URL}/nova-transacao/${parms.type}`, transaction, config).then(() => {
           navigate("/home")
         }).catch((error) => {
           const erro = (error.response.status);
