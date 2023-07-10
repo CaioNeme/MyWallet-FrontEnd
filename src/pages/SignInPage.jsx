@@ -1,19 +1,18 @@
-import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom"
-import MyWalletLogo from "../components/MyWalletLogo"
-import { useState, useContext, useEffect } from "react"
-import axios from "axios"
+import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+import MyWalletLogo from "../components/MyWalletLogo";
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
 import { UserDataContext } from "../context/UserDataContext";
 
 
 export default function SignInPage() {
-  const { setToken, lsToken } = useContext(UserDataContext);
-  const navigate = useNavigate()
+  const { setToken, token, lsToken } = useContext(UserDataContext);
+  const navigate = useNavigate();
   const [login, setLogin] = useState({
     email: "",
     password: ""
   });
-
 
   function handleChange(event) {
     const newLogin = { ...login };
@@ -21,21 +20,20 @@ export default function SignInPage() {
     setLogin(newLogin);
   }
 
-  function loged() {
-    if (lsToken !== null) {
+  useEffect(() => {
+    if (token !== null) {
       navigate("/home")
     }
-  }
-  loged()
+  }, [])
 
   return (
     <SingInContainer>
       <form onSubmit={event => {
         event.preventDefault();
         axios.post("http://localhost:5000/", login).then((user) => {
-          setToken(user.data)
-          localStorage.setItem("token", user.data)
-          navigate("/home")
+          setToken(user.data);
+          localStorage.setItem("token", user.data);
+          navigate("/home");
         }).catch((error) => {
           const erro = (error.response.status);
           if (erro === 422) return alert("Confira os dados!");

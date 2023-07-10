@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from "react"
 export default function HomePage() {
 
   const navigate = useNavigate()
-  const { userData, setUserData, token } = useContext(UserDataContext);
+  const { userData, setUserData, setToken, token } = useContext(UserDataContext);
   const [transactions, setTransactions] = useState([]);
 
   const config = {
@@ -20,6 +20,7 @@ export default function HomePage() {
 
   useEffect(() => {
     axios.get("http://localhost:5000/home", config).then((user) => {
+      setToken(null);
       setUserData(user.data[0].user);
       setTransactions(user.data[1].transaction.reverse())
     }).catch(err => console.log(err))
