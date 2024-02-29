@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom"
-import { UserDataContext } from "../context/UserDataContext";
-import styled from "styled-components"
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import { UserDataContext } from "../context/UserDataContext";
 
 export default function TransactionsPage() {
 
@@ -10,7 +10,7 @@ export default function TransactionsPage() {
   const navigate = useNavigate();
   const { token } = useContext(UserDataContext);
   const [transaction, setTransaction] = useState({
-    valor: "",
+    value: "",
     description: "",
   })
 
@@ -34,9 +34,9 @@ export default function TransactionsPage() {
       <h1>Nova {parms.type} </h1>
       <form onSubmit={event => {
         event.preventDefault();
-        if (transaction.valor === "0") return alert("Zero não é um numero valido")
-        if (transaction.valor.includes(",")) transaction.valor = transaction.valor.replace(",", ".")
-        transaction.valor = Number(transaction.valor).toFixed(2)
+        if (transaction.value === "0") return alert("Zero não é um numero valido")
+        if (transaction.value.includes(",")) transaction.value = transaction.value.replace(",", ".")
+        transaction.value = Number(transaction.value).toFixed(2)
         axios.post(`${import.meta.env.VITE_API_URL}/nova-transacao/${parms.type}`, transaction, config).then(() => {
           navigate("/home")
         }).catch((error) => {
@@ -46,7 +46,7 @@ export default function TransactionsPage() {
         })
 
       }}>
-        <input data-test="registry-amount-input" required onChange={handleChange} value={transaction.valor} name="valor" placeholder="Valor" type="text" min={1} />
+        <input data-test="registry-amount-input" required onChange={handleChange} value={transaction.value} name="value" placeholder="Valor" type="number" min={1} />
         <input data-test="registry-name-input" required onChange={handleChange} value={transaction.description} name="description" placeholder="Descrição" type="text" />
         <button data-test="registry-save">Salvar {parms.tipo}</button>
       </form>

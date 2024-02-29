@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { BiExit } from "react-icons/bi";
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserDataContext } from "../context/UserDataContext";
 import { useContext, useEffect, useState } from "react";
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+import { BiExit } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { UserDataContext } from "../context/UserDataContext";
 
 
 export default function HomePage() {
@@ -20,8 +20,8 @@ export default function HomePage() {
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/home`, config).then((user) => {
-      setUserData(user.data[0].user);
-      setTransactions(user.data[1].transaction.reverse())
+      setUserData(user.data);
+      setTransactions(user.data.Transactions.reverse())
     }).catch(err => console.log(err))
   }, [])
   useEffect(() => {
@@ -32,9 +32,9 @@ export default function HomePage() {
     let balanceTotal = 0;
     transactions.map(transaction => {
       if (transaction.type === "deposit") {
-        balanceTotal = balanceTotal + Number(transaction.valor);
+        balanceTotal = balanceTotal + Number(transaction.value);
       } else {
-        balanceTotal = balanceTotal - Number(transaction.valor);
+        balanceTotal = balanceTotal - Number(transaction.value);
       }
     })
     return balanceTotal
@@ -59,7 +59,7 @@ export default function HomePage() {
                 <span>{transaction.date}</span>
                 <strong data-test="registry-name">{transaction.description}</strong>
               </div>
-              <Value data-test="registry-amount" color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.valor.replace(".", ",")}</Value>
+              <Value data-test="registry-amount" color={transaction.type === "deposit" ? "positivo" : "negativo"}>{transaction.value.toFixed(2).replace(",", ".")}</Value>
             </ListItemContainer>
           )}
         </ListaUL>
